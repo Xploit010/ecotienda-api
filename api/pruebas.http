@@ -1,0 +1,40 @@
+### 1. Crear un producto nuevo (debe responder 201 Created)
+POST http://localhost:3002/api/productos
+Content-Type: application/json
+
+{
+  "codigo": "PR009",
+  "nombre": "Teclado Mecanico",
+  "stock": 15,
+  "valorunitario": 120000
+}
+
+### 2. Actualizar ese producto (debe responder 200 OK)
+PUT http://localhost:3002/api/productos/PR009
+Content-Type: application/json
+
+{
+  "nombre": "Teclado Mecanico RGB",
+  "stock": 10,
+  "valorunitario": 135000
+}
+
+### 3. Probar validaciones con datos invalidos (debe responder 400 Bad Request)
+POST http://localhost:3002/api/productos
+Content-Type: application/json
+
+{
+  "codigo": "",
+  "nombre": "",
+  "stock": -5,
+  "valorunitario": 0
+}
+
+### 4. Eliminar el producto de prueba (debe responder 204 No Content)
+DELETE http://localhost:3002/api/productos/PR009
+
+### Listar todos los productos (200 OK)
+GET http://localhost:3002/api/productos
+
+### Consultar un producto especifico ( 200 OK)
+GET http://localhost:3002/api/productos/PR001
