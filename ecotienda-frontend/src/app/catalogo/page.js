@@ -108,7 +108,7 @@ async function finalizarCompra() {
         <h2 style={{ color: "#0352f1", marginBottom: "8px" }}>
           Catálogo de Productos ByteCentral
         </h2>
-        <p style={{ color: "#555", marginBottom: "16px" }}>
+        <p style={{ color: "#fdfafa", marginBottom: "16px" }}>
           Selecciona equipos y artículos sostenibles conectados en tiempo real con nuestra API.
         </p>
 

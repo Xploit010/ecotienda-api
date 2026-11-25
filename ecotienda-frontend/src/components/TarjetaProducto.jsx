@@ -43,7 +43,7 @@ export default function TarjetaProducto({ producto, onAgregar }) {
           <p
             style={{
               textDecoration: "line-through",
-              color: "#888",
+              color: "#ffffff",
               fontSize: "0.9rem",
               margin: 0,
             }}
@@ -63,7 +63,7 @@ export default function TarjetaProducto({ producto, onAgregar }) {
           {formatoCOP(producto.precio)}
         </p>
 
-        <p style={{ fontSize: "0.85rem", color: "#555" }}>
+        <p style={{ fontSize: "0.85rem", color: "#ffffff" }}>
           Disponibles: <strong>{producto.stock}</strong> unidades
         </p>
       </div>

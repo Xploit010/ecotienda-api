@@ -125,7 +125,7 @@ export default function AdminPage() {
             ? `Editando Producto #${editandoId}`
             : "Panel de Administración — Nuevo Producto"}
         </h2>
-        <p style={{ color: "#555", marginBottom: "16px" }}>
+        <p style={{ color: "#ffffff", marginBottom: "16px" }}>
           Gestiona el catálogo e inventario de ByteCentral directamente contra la API.
         </p>
 
@@ -338,7 +338,7 @@ export default function AdminPage() {
                     </td>
                     <td style={{ padding: "10px" }}>{prod.categoria}</td>
                     <td style={{ padding: "10px" }}>{formatoCOP(prod.precio)}</td>
-                    <td style={{ padding: "10px", color: "#777" }}>
+                    <td style={{ padding: "10px", color: "#fdfdfd" }}>
                       {formatoCOP(prod.precio_anterior ?? prod.precio)}
                     </td>
                     <td style={{ padding: "10px" }}>{prod.stock}</td>

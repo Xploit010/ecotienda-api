@@ -44,7 +44,7 @@ export default function Carrito({
       )}
 
       {items.length === 0 ? (
-        <p style={{ color: "#666", fontSize: "0.95rem" }}>
+        <p style={{ color: "#ffffff", fontSize: "0.95rem" }}>
           Aún no has agregado productos.
         </p>
       ) : (
@@ -66,7 +66,7 @@ export default function Carrito({
                   <strong style={{ fontSize: "0.9rem", display: "block" }}>
                     {item.nombre}
                   </strong>
-                  <span style={{ fontSize: "0.85rem", color: "#555" }}>
+                  <span style={{ fontSize: "0.85rem", color: "#ffffff" }}>
                     {formatoCOP(item.precio)} c/u
                   </span>
 
