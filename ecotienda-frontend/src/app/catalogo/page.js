@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { obtenerProductos, crearPedido } from "@/lib/api";
+import TarjetaProducto from "@/components/TarjetaProducto";
+import Carrito from "@/components/Carrito";
 
 export default function CatalogoPage() {
   const [productos, setProductos] = useState([]);
@@ -11,6 +13,7 @@ export default function CatalogoPage() {
   const [categoriaActiva, setCategoriaActiva] = useState("Todas");
   const [carrito, setCarrito] = useState([]);
   const [mensajePedido, setMensajePedido] = useState("");
+  const [cliente, setCliente] = useState("");
 
   useEffect(() => {
     cargarProductos();
@@ -29,10 +32,8 @@ export default function CatalogoPage() {
     }
   }
 
-  // Obtener categorías únicas dinámicamente
   const categorias = ["Todas", ...new Set(productos.map((p) => p.categoria))];
 
-  // Filtrar por búsqueda y categoría
   const productosFiltrados = productos.filter((prod) => {
     const coincideNombre = prod.nombre
       .toLowerCase()
@@ -58,42 +59,48 @@ export default function CatalogoPage() {
     });
   }
 
+  function cambiarCantidad(id, nuevaCantidad) {
+    if (nuevaCantidad <= 0) {
+      quitarDelCarrito(id);
+      return;
+    }
+    setCarrito((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? { ...item, cantidad: Math.min(nuevaCantidad, item.stock) }
+          : item
+      )
+    );
+  }
+
   function quitarDelCarrito(id) {
     setCarrito((prev) => prev.filter((item) => item.id !== id));
   }
 
-  const totalCarrito = carrito.reduce(
-    (acc, item) => acc + item.precio * item.cantidad,
-    0
-  );
-
-  async function finalizarCompra() {
-    if (carrito.length === 0) return;
-    try {
-      await crearPedido({
-        items: carrito.map((item) => ({
-          producto_id: item.id,
-          nombre: item.nombre,
-          cantidad: item.cantidad,
-          precio: item.precio,
-        })),
-        total: totalCarrito,
-      });
-      setCarrito([]);
-      setMensajePedido("¡Pedido registrado con éxito en ByteCentral!");
-      cargarProductos(); // Refresca el stock si el backend lo descuenta
-    } catch (err) {
-      setMensajePedido("Compra procesada localmente (verifica el formato de /api/pedidos).");
-      setCarrito([]);
-    }
+async function finalizarCompra() {
+  if (carrito.length === 0) return;
+  if (!cliente.trim()) {
+    setMensajePedido("Por favor escribe el nombre del cliente.");
+    return;
   }
 
-  const formatoCOP = (valor) =>
-    new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      maximumFractionDigits: 0,
-    }).format(valor);
+  try {
+    await crearPedido({
+      cliente: cliente.trim(),
+      productos: carrito.map((item) => ({
+        id: item.id,
+        cantidad: item.cantidad,
+      })),
+    });
+
+    setCarrito([]);
+    setCliente("");
+    setMensajePedido("¡Pedido registrado con éxito en ByteCentral!");
+    cargarProductos();
+  } catch (err) {
+    setMensajePedido(err.message || "Error al registrar el pedido.");
+  }
+}
 
   return (
     <main style={{ padding: "20px 0" }}>
@@ -105,7 +112,6 @@ export default function CatalogoPage() {
           Selecciona equipos y artículos sostenibles conectados en tiempo real con nuestra API.
         </p>
 
-        {/* Buscador y filtros */}
         <div
           style={{
             display: "flex",
@@ -163,7 +169,6 @@ export default function CatalogoPage() {
           alignItems: "start",
         }}
       >
-        {/* Cuadrícula de productos */}
         <div
           style={{
             display: "grid",
@@ -171,180 +176,24 @@ export default function CatalogoPage() {
             gap: "18px",
           }}
         >
-          {productosFiltrados.map((prod) => {
-            const tieneDescuento = prod.precio_anterior > prod.precio;
-            return (
-              <article
-                key={prod.id}
-                className="tarjeta"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      fontSize: "0.75rem",
-                      backgroundColor: "#e8f0fe",
-                      color: "#0352f1",
-                      padding: "4px 10px",
-                      borderRadius: "12px",
-                      fontWeight: "bold",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    {prod.categoria}
-                  </span>
-
-                  <h3 style={{ fontSize: "1.1rem", marginBottom: "8px" }}>
-                    {prod.nombre}
-                  </h3>
-
-                  {tieneDescuento && (
-                    <p
-                      style={{
-                        textDecoration: "line-through",
-                        color: "#888",
-                        fontSize: "0.9rem",
-                        margin: 0,
-                      }}
-                    >
-                      Antes: {formatoCOP(prod.precio_anterior)}
-                    </p>
-                  )}
-
-                  <p
-                    style={{
-                      fontSize: "1.3rem",
-                      fontWeight: "bold",
-                      color: "#0352f1",
-                      margin: "4px 0",
-                    }}
-                  >
-                    {formatoCOP(prod.precio)}
-                  </p>
-
-                  <p style={{ fontSize: "0.85rem", color: "#555" }}>
-                    Disponibles: <strong>{prod.stock}</strong> unidades
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => agregarAlCarrito(prod)}
-                  disabled={prod.stock <= 0}
-                  className="boton-primario"
-                  style={{
-                    marginTop: "12px",
-                    width: "100%",
-                    opacity: prod.stock <= 0 ? 0.5 : 1,
-                    cursor: prod.stock <= 0 ? "not-allowed" : "pointer",
-                  }}
-                >
-                  {prod.stock > 0 ? "Agregar al carrito" : "Agotado"}
-                </button>
-              </article>
-            );
-          })}
+          {productosFiltrados.map((prod) => (
+            <TarjetaProducto
+              key={prod.id}
+              producto={prod}
+              onAgregar={agregarAlCarrito}
+            />
+          ))}
         </div>
 
-        {/* Panel del Carrito */}
-        <aside className="tarjeta">
-          <h3 style={{ color: "#0352f1", marginBottom: "12px" }}>
-            Carrito ({carrito.reduce((sum, i) => sum + i.cantidad, 0)})
-          </h3>
-
-          {mensajePedido && (
-            <p
-              style={{
-                backgroundColor: "#e6f4ea",
-                color: "#137333",
-                padding: "10px",
-                borderRadius: "8px",
-                fontSize: "0.9rem",
-                marginBottom: "12px",
-              }}
-            >
-              {mensajePedido}
-            </p>
-          )}
-
-          {carrito.length === 0 ? (
-            <p style={{ color: "#666", fontSize: "0.95rem" }}>
-              Aún no has agregado productos.
-            </p>
-          ) : (
-            <>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {carrito.map((item) => (
-                  <li
-                    key={item.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      borderBottom: "1px solid #eee",
-                      padding: "8px 0",
-                      gap: "8px",
-                    }}
-                  >
-                    <div>
-                      <strong style={{ fontSize: "0.9rem" }}>
-                        {item.nombre}
-                      </strong>
-                      <div style={{ fontSize: "0.85rem", color: "#555" }}>
-                        {item.cantidad} x {formatoCOP(item.precio)}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => quitarDelCarrito(item.id)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "crimson",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                      }}
-                      title="Eliminar"
-                    >
-                      ✕
-                    </button>
-                  </li>
-                ))}
-              </ul>
-
-              <div
-                style={{
-                  marginTop: "16px",
-                  paddingTop: "12px",
-                  borderTop: "2px solid #0352f1",
-                }}
-              >
-                <p
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontWeight: "bold",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  <span>Total:</span>
-                  <span>{formatoCOP(totalCarrito)}</span>
-                </p>
-
-                <button
-                  onClick={finalizarCompra}
-                  className="boton-primario"
-                  style={{ width: "100%", marginTop: "8px" }}
-                >
-                  Confirmar pedido
-                </button>
-              </div>
-            </>
-          )}
-        </aside>
+        <Carrito
+          items={carrito}
+          cliente={cliente}
+          onCambiarCliente={setCliente}
+          onCambiarCantidad={cambiarCantidad}
+          onQuitar={quitarDelCarrito}
+          onConfirmar={finalizarCompra}
+          mensajePedido={mensajePedido}
+        />
       </div>
     </main>
   );

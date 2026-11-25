@@ -10,7 +10,7 @@ import {
 
 const FORMULARIO_INICIAL = {
   nombre: "",
-  categoria: "Hogar",
+  categoria: "Iluminacion",
   precio: "",
   precio_anterior: "",
   stock: "",
@@ -178,7 +178,7 @@ export default function AdminPage() {
               required
               value={formulario.nombre}
               onChange={manejarCambio}
-              placeholder="Ej. Panel Solar Portátil 100W"
+              placeholder="Panel Solar Portátil 100W"
               style={{
                 width: "100%",
                 padding: "10px",
@@ -192,20 +192,22 @@ export default function AdminPage() {
             <label style={{ display: "block", fontWeight: "600", marginBottom: "4px" }}>
               Categoría
             </label>
-            <input
-              type="text"
+            <select
               name="categoria"
               required
               value={formulario.categoria}
               onChange={manejarCambio}
-              placeholder="Ej. Hogar, Energía, Alimentos"
               style={{
                 width: "100%",
                 padding: "10px",
                 borderRadius: "8px",
                 border: "1px solid #ccc",
               }}
-            />
+            >
+                <option value="Iluminacion">Iluminación</option>
+                <option value="Electrodomesticos">Electrodomésticos</option>
+                <option value="Solar">Solar</option>
+            </select>
           </div>
 
           <div>

@@ -19,12 +19,12 @@ CREATE TABLE pedidos (
 );
 
 INSERT INTO productos (nombre, categoria, precio, precio_anterior, stock) VALUES
-  ('Botella Termica Acero Inoxidable', 'Hogar', 45000, 58000, 20),
-  ('Bolsa Reutilizable Algodon Organico', 'Hogar', 18000, 24000, 35),
-  ('Set Pitillos Bambu Ecologicos', 'Hogar', 15000, 15000, 40),
-  ('Cepillo Dental de Bambu', 'Cuidado Personal', 12000, 16000, 50),
-  ('Jabon Artesanal de Avena y Miel', 'Cuidado Personal', 14000, 18000, 25),
-  ('Champu Solido Natural Romero', 'Cuidado Personal', 28000, 35000, 18),
-  ('Cafe Organico Sierra Nevada 500g', 'Alimentos', 32000, 38000, 15),
-  ('Miel Pura de Abejas 350g', 'Alimentos', 25000, 25000, 22),
-  ('Granola Artesanal Sin Azucar 400g', 'Alimentos', 21000, 26000, 19);
+  ('Cinta LED Inteligente WiFi 5m RGBW', 'Iluminacion', 54000, 68000, 30),
+  ('Lampara Solar Exterior con Sensor PIR 100W', 'Iluminacion', 79000, 95000, 22),
+  ('Tubo LED T8 18W Luz Dia 120cm', 'Iluminacion', 16500, 16500, 45),
+  ('Lavadora Carga Frontal Inverter 12kg', 'Electrodomesticos', 1950000, 2290000, 8),
+  ('Enchufe Inteligente WiFi con Medidor Consumo', 'Electrodomesticos', 42000, 55000, 35),
+  ('Horno Microondas Digital Eco-Save 20L', 'Electrodomesticos', 380000, 380000, 14),
+  ('Inversor Solar Hibrido Onda Pura 3000W', 'Solar', 1650000, 1890000, 10),
+  ('Bateria de Litio LiFePO4 12V 100Ah', 'Solar', 1420000, 1600000, 12),
+  ('Controlador de Carga Solar MPPT 40A', 'Solar', 320000, 320000, 18);
