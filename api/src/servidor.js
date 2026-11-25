@@ -12,10 +12,10 @@ const PUERTO = 3002;
 // Crea la aplicacion
 const app = express();
 
-// cors(): le da permiso al frontend para llamar a la API
-app.use(cors());
 // express.json(): convierte el JSON que llega en un objeto (req.body)
 app.use(express.json());
+// cors(): le da permiso al frontend para llamar a la API
+app.use(cors());
 
 // GET / -> un mensaje para saber que la API esta viva
 app.get("/", (req, res) => {

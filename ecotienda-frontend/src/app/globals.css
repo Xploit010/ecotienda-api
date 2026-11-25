@@ -2,8 +2,8 @@
 
 :root {
   --color-principal: #0352f1;
-  --color-acento: #F9A825;
-  --color-fondo: #F4F7F2;
+  --color-acento: #f22509;
+  --color-fondo: #f7f7f2;
   --color-texto: #1F2933;
   --color-suave: #DDEBDD;
   --radio: 12px;
@@ -47,7 +47,7 @@ body {
   padding: 20px;
 }
 
-h1, h2, h3 {
+h1, h2 {
   color: var(--color-principal);
   font-weight: 700;
   margin-bottom: 12px;
@@ -322,6 +322,21 @@ h1, h2, h3 {
   color: #52606D;
   font-size: 0.9rem;
   text-align: center;
+}
+
+.boton-primario {
+  background-color: #0352f1;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.boton-primario:hover:not(:disabled) {
+  background-color: #023eb8;
 }
 
 /* Diseño Responsivo */
