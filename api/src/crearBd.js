@@ -5,8 +5,8 @@ import { DatabaseSync } from "node:sqlite";
 
 // Las rutas de los dos archivos del bloque de la base de datos.
 // asi funciona sin importar desde que carpeta se ejecute el comando
-const archivoSql = new URL("../../bd/facturas.sql", import.meta.url);
-const archivoBd = new URL("../../bd/facturas.db", import.meta.url);
+const archivoSql = new URL("../datos/tienda.sql", import.meta.url);
+const archivoBd = new URL("../datos/tienda.db", import.meta.url);
 
 // Lee el script SQL como texto ("utf8" = con tildes y enes)
 const sql = readFileSync(archivoSql, "utf8");

@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 // La capa de rutas
 import productoRutas from "./rutas/productoRutas.js";
+import pedidosRutas from "./rutas/pedidosRutas.js";
 
 // El puerto: el "numero de puerta" por donde la API recibe peticiones
 const PUERTO = 3002;
@@ -11,7 +12,6 @@ const PUERTO = 3002;
 // Crea la aplicacion
 const app = express();
 
-// MIDDLEWARES: se ejecutan en CADA peticion, antes de las rutas
 // cors(): le da permiso al frontend para llamar a la API
 app.use(cors());
 // express.json(): convierte el JSON que llega en un objeto (req.body)
@@ -19,11 +19,16 @@ app.use(express.json());
 
 // GET / -> un mensaje para saber que la API esta viva
 app.get("/", (req, res) => {
-    res.json({ mensaje: "API de facturas funcionando", productos: "/api/productos" });
+    res.json({
+        mensaje: "API de Ecotienda funcionando",
+        productos: "/api/productos",
+        pedidos: "/api/pedidos"
+    });
 });
 
-// Conecta las rutas de productos debajo de /api/productos
+// Conecta las rutas debajo de /api/productos y /api/pedidos
 app.use("/api/productos", productoRutas);
+app.use("/api/pedidos", pedidosRutas);
 
 // Si ninguna ruta coincide: 404 en JSON
 app.use((req, res) => {
@@ -33,7 +38,7 @@ app.use((req, res) => {
 // Manejo de errores (4 parametros): si llega un JSON mal escrito o algo falla,
 // responde en JSON en vez de una pagina HTML de error
 app.use((err, req, res, next) => {
-    // Muestra el error en la terminal, para saber que paso (por ejemplo: no such table: producto)
+    // Muestra el error en la terminal, para saber que paso
     console.error("Error:", err.message);
     // err.status = 400 si el JSON llego mal escrito; si no trae codigo, es un 500
     const codigo = err.status || 500;
@@ -47,5 +52,5 @@ app.listen(PUERTO, (error) => {
         console.error("Cierren la otra terminal donde la API ya esta corriendo, u opriman Ctrl + C en ella.");
         return;
     }
-    console.log(`API de facturas en http://localhost:${PUERTO}`);
+    console.log(`API de Ecotienda en http://localhost:${PUERTO}`);
 });

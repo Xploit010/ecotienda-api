@@ -1,40 +1,65 @@
-### 1. Crear un producto nuevo (debe responder 201 Created)
-POST http://localhost:3002/api/productos
-Content-Type: application/json
+### Verificar que el servidor este activo
+GET http://localhost:3002/
 
-{
-  "codigo": "PR009",
-  "nombre": "Teclado Mecanico",
-  "stock": 15,
-  "valorunitario": 120000
-}
-
-### 2. Actualizar ese producto (debe responder 200 OK)
-PUT http://localhost:3002/api/productos/PR009
-Content-Type: application/json
-
-{
-  "nombre": "Teclado Mecanico RGB",
-  "stock": 10,
-  "valorunitario": 135000
-}
-
-### 3. Probar validaciones con datos invalidos (debe responder 400 Bad Request)
-POST http://localhost:3002/api/productos
-Content-Type: application/json
-
-{
-  "codigo": "",
-  "nombre": "",
-  "stock": -5,
-  "valorunitario": 0
-}
-
-### 4. Eliminar el producto de prueba (debe responder 204 No Content)
-DELETE http://localhost:3002/api/productos/PR009
-
-### Listar todos los productos (200 OK)
+### Listar todos los productos
 GET http://localhost:3002/api/productos
 
-### Consultar un producto especifico ( 200 OK)
-GET http://localhost:3002/api/productos/PR001
+### Filtrar productos por categoria
+GET http://localhost:3002/api/productos?categoria=Hogar
+
+### Consultar un producto por ID
+GET http://localhost:3002/api/productos/1
+
+### Crear un producto nuevo (debe devolver 201)
+POST http://localhost:3002/api/productos
+Content-Type: application/json
+
+{
+  "nombre": "Desodorante Natural en Barra",
+  "categoria": "Cuidado Personal",
+  "precio": 22000,
+  "precio_anterior": 26000,
+  "stock": 15
+}
+
+### Actualizar el producto creado 
+PUT http://localhost:3002/api/productos/10
+Content-Type: application/json
+
+{
+  "nombre": "Desodorante Natural en Barra Menta",
+  "categoria": "Cuidado Personal",
+  "precio": 23000,
+  "precio_anterior": 26000,
+  "stock": 12
+}
+
+### Eliminar el producto creado (debe devolver 204)
+DELETE http://localhost:3002/api/productos/10
+
+### Probar validacion de error al crear producto sin datos (debe devolver 400)
+POST http://localhost:3002/api/productos
+Content-Type: application/json
+
+{
+  "nombre": "",
+  "precio": -500
+}
+
+### Crear un pedido nuevo (descuenta stock de los productos 1 y 4)
+POST http://localhost:3002/api/pedidos
+Content-Type: application/json
+
+{
+  "cliente": "Laura Gomez",
+  "productos": [
+    { "id": 1, "cantidad": 2 },
+    { "id": 4, "cantidad": 3 }
+  ]
+}
+
+### Listar todos los pedidos
+GET http://localhost:3002/api/pedidos
+
+### Verificar que el stock de los productos 1 bajo en la BD
+GET http://localhost:3002/api/productos/1

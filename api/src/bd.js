@@ -9,3 +9,4 @@ const db = new DatabaseSync(rutaDb);
 db.exec("PRAGMA foreign_keys = ON;");
 
 export default db;
+
