@@ -76,6 +76,10 @@ export default function AdminPage() {
     };
 
     try {
+      if (!payload.nombre || payload.precio <= 0 || payload.stock < 0) {
+        alert("Verifica que el nombre no esté vacío y que el precio y stock sean válidos.");
+        return;
+      }
       if (editandoId !== null) {
         await actualizarProducto(editandoId, payload);
         setMensaje("Producto actualizado correctamente.");
@@ -90,6 +94,7 @@ export default function AdminPage() {
       setError(`Error al guardar el producto: ${err.message}`);
     }
   }
+
 
   function iniciarEdicion(producto) {
     setMensaje("");
