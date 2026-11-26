@@ -32,7 +32,23 @@ export default function AdminPage() {
     try {
       setCargando(true);
       const data = await obtenerProductos();
-      setProductos(Array.isArray(data) ? data : []);
+
+      // Busca el arreglo en el primer nivel o en un segundo nivel anidado
+      const extraerLista = (obj) => {
+        if (Array.isArray(obj)) return obj;
+        if (obj && typeof obj === "object") {
+          for (const valor of Object.values(obj)) {
+            if (Array.isArray(valor)) return valor;
+            if (valor && typeof valor === "object") {
+              const anidado = Object.values(valor).find((v) => Array.isArray(v));
+              if (anidado) return anidado;
+            }
+          }
+        }
+        return [];
+      };
+
+      setProductos(extraerLista(data));
       setError("");
     } catch (err) {
       setError("No se pudo cargar el inventario desde la API.");
@@ -120,10 +136,10 @@ export default function AdminPage() {
     <main style={{ padding: "20px 0" }}>
       {/* Formulario de Creación / Edición */}
       <section className="tarjeta" style={{ marginBottom: "24px" }}>
-        <h2 style={{ color: "#0352f1", marginBottom: "8px" }}>
+        <h2 style={{ color: "#7dd3fc", marginBottom: "8px" }}>
           {editandoId !== null
             ? `Editando Producto #${editandoId}`
-            : "Panel de Administración — Nuevo Producto"}
+            : "Panel de Administración de Productos"}
         </h2>
         <p style={{ color: "#ffffff", marginBottom: "16px" }}>
           Gestiona el catálogo e inventario de ByteCentral directamente contra la API.
@@ -303,7 +319,7 @@ export default function AdminPage() {
 
       {/* Tabla de Inventario */}
       <section className="tarjeta">
-        <h3 style={{ color: "#0352f1", marginBottom: "14px" }}>
+        <h3 style={{ color: "#7dd3fc", marginBottom: "14px" }}>
           Inventario Actual ({productos.length} productos)
         </h3>
 
@@ -319,7 +335,7 @@ export default function AdminPage() {
               }}
             >
               <thead>
-                <tr style={{ borderBottom: "2px solid #0352f1", color: "#0352f1" }}>
+                <tr style={{ borderBottom: "2px solid #38bdf8", color: "#38bdf8" }}>
                   <th style={{ padding: "10px" }}>ID</th>
                   <th style={{ padding: "10px" }}>Nombre</th>
                   <th style={{ padding: "10px" }}>Categoría</th>

@@ -105,7 +105,7 @@ async function finalizarCompra() {
   return (
     <main style={{ padding: "20px 0" }}>
       <section className="tarjeta" style={{ marginBottom: "24px" }}>
-        <h2 style={{ color: "#0352f1", marginBottom: "8px" }}>
+        <h2 style={{ color: "#7dd3fc", marginBottom: "8px" }}>
           Catálogo de Productos ByteCentral
         </h2>
         <p style={{ color: "#fdfafa", marginBottom: "16px" }}>

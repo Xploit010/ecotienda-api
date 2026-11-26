@@ -1,5 +1,6 @@
 import "./globals.css";
 import Encabezado from "../components/Encabezado";
+import VideoFondo from "../components/VideoFondo";
 
 export const metadata = {
   title: "ByteCentral: Equipos de Alta Eficiencia Energética",
@@ -11,24 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" suppressHydrationWarning>
       <body style={{ background: "transparent" }}>
-        {/* Video de fondo 100% nítido, sin capa oscura */}
-        <video
-          src="/fondo.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            objectFit: "cover",
-            zIndex: -1,
-            pointerEvents: "none",
-          }}
-        />
+        <VideoFondo />
 
         <div className="contenedor">
           <Encabezado />
