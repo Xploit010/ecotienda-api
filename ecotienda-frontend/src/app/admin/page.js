@@ -362,7 +362,15 @@ export default function AdminPage() {
                     <td style={{ padding: "10px", color: "#fdfdfd" }}>
                       {formatoCOP(prod.precio_anterior ?? prod.precio)}
                     </td>
-                    <td style={{ padding: "10px" }}>{prod.stock}</td>
+                    <td
+                      style={{
+                        padding: "10px",
+                        color: prod.stock < 10 ? "#f87171" : "#ffffff",
+                        fontWeight: prod.stock < 10 ? "bold" : "normal",
+                      }}
+                    >
+                      {prod.stock} {prod.stock < 10 ? "(Bajo)" : ""}
+                    </td>
                     <td style={{ padding: "10px", display: "flex", gap: "8px" }}>
                       <button
                         onClick={() => iniciarEdicion(prod)}
